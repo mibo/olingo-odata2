@@ -29,8 +29,9 @@ import org.apache.olingo.odata2.jpa.processor.api.exception.ODataJPARuntimeExcep
 import org.apache.olingo.odata2.jpa.processor.ref.extension.OnDBWriteContent;
 import org.apache.olingo.odata2.jpa.processor.ref.extension.SalesOrderProcessingExtension;
 import org.apache.olingo.odata2.jpa.processor.ref.factory.JPAEntityManagerFactory;
+import org.apache.olingo.odata2.jpa.processor.ref.util.CustomJPAServiceFactory;
 
-public class JPAReferenceServiceFactory extends ODataJPAServiceFactory {
+public class JPAReferenceServiceFactory extends CustomJPAServiceFactory {
   private static final String PUNIT_NAME = "salesorderprocessing";
   private static final String MAPPING_MODEL = "SalesOrderProcessingMappingModel.xml";
   private static final String CONFIG = "serviceConfig";
