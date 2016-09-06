@@ -48,6 +48,10 @@ public class Customer extends CustomerBase {
   @JoinColumn(name = "PARENT_ID", referencedColumnName = "ID" , nullable = true)
   private Customer parent;
 
+  @OneToMany
+  @JoinColumn(name = "PARENT_ID", referencedColumnName = "ID" , nullable = true)
+  private List<Customer> subCustomer;
+
   @Column(name = "NAME")
   private String name;
 
@@ -86,6 +90,14 @@ public class Customer extends CustomerBase {
 
   public void setParent(Customer parent) {
     this.parent = parent;
+  }
+
+  public List<Customer> getSubCustomer() {
+    return subCustomer;
+  }
+
+  public void setSubCustomer(List<Customer> subCustomer) {
+    this.subCustomer = subCustomer;
   }
 
   public String getName() {
