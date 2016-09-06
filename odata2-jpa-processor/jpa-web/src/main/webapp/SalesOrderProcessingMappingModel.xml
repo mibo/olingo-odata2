@@ -14,6 +14,17 @@
 	<PersistenceUnit name="salesorderprocessing">
 		<EDMSchemaNamespace>SalesOrderProcessing</EDMSchemaNamespace>
 		<JPAEntityTypes>
+			<JPAEntityType name="Customer">
+				<EDMEntityType>Customer</EDMEntityType>
+				<EDMEntitySet>Customers</EDMEntitySet>
+				<JPAAttributes>
+					<JPAAttribute name="FK_PARENT_ID">ParentFkId</JPAAttribute>
+				</JPAAttributes>
+				<JPARelationships>
+					<JPARelationship name="subCustomer">RelatedCustomers</JPARelationship>
+					<JPARelationship name="store">MainStore</JPARelationship>
+				</JPARelationships>
+			</JPAEntityType>
 			<JPAEntityType name="SalesOrderHeader">
 				<EDMEntityType>SalesOrder</EDMEntityType>
 				<EDMEntitySet>SalesOrders</EDMEntitySet>

@@ -22,18 +22,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "T_CUSTOMER")
@@ -61,6 +50,9 @@ public class Customer extends CustomerBase {
 
   @Embedded
   private Address address;
+
+  @OneToOne(optional = true)
+  private Store store;
 
   @Column(name = "CREATED_AT")
   private Timestamp createdAt;
@@ -90,6 +82,14 @@ public class Customer extends CustomerBase {
 
   public void setParent(Customer parent) {
     this.parent = parent;
+  }
+
+  public Store getStore() {
+    return store;
+  }
+
+  public void setStore(Store store) {
+    this.store = store;
   }
 
   public List<Customer> getSubCustomer() {

@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.olingo.odata2.jpa.processor.ref.model.Customer;
 import org.apache.olingo.odata2.jpa.processor.ref.model.Material;
 import org.apache.olingo.odata2.jpa.processor.ref.model.Store;
 import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
@@ -94,6 +95,7 @@ public class DataGenerator {
         }
       }
       setMaterialInStore();
+      setMainStores();
       entityManager.flush();
       entityManager.getTransaction().commit();
     }
@@ -118,6 +120,24 @@ public class DataGenerator {
         i = 0;
       }
       entityManager.persist(material);
+    }
+    entityManager.flush();
+  }
+
+  private void setMainStores() {
+    Query query = entityManager.createQuery("SELECT e FROM Customer e");
+    List<Customer> customers = (List<Customer>) query.getResultList();
+
+    query = entityManager.createQuery("SELECT e FROM Store e");
+    List<Store> stores = (List<Store>) query.getResultList();
+
+    int storeSize = stores.size();
+    int i = 0;
+    for (Customer c: customers) {
+      if(i < storeSize) {
+        c.setStore(stores.get(i++));
+        entityManager.persist(c);
+      }
     }
     entityManager.flush();
   }
