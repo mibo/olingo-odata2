@@ -109,15 +109,17 @@ public class BatchHandlerImpl implements BatchHandler {
 
   private void fillContentIdMap(final ODataResponse response, final String contentId, final String baseUri) {
     String location = response.getHeader(HttpHeaders.LOCATION);
-    String relLocation = location.replace(baseUri + "/", "");
-    contentIdMap.put("$" + contentId, relLocation);
+    if (location != null) {
+      String relLocation = location.replace(baseUri + "/", "");
+      contentIdMap.put("$" + contentId, relLocation);
+    }
   }
 
   private ODataRequest modifyRequest(final ODataRequest request, final List<PathSegment> odataSegments)
       throws ODataException {
     String contentId = contentIdMap.get(odataSegments.get(0).getPath());
     if (contentId == null) {
-      //invalid content ID. But throwing an exception here is wrong so we use the base request and fail later
+      // invalid content ID. But throwing an exception here is wrong so we use the base request and fail later
       return request;
     }
     PathInfoImpl pathInfo = new PathInfoImpl();
@@ -169,12 +171,10 @@ public class BatchHandlerImpl implements BatchHandler {
   }
 
   private String getBaseUri(final ODataRequest request) {
+    // The service root already contains any additional path parameters
     String baseUri = request.getPathInfo().getServiceRoot().toASCIIString();
     if (baseUri.endsWith("/")) {
       baseUri = baseUri.substring(0, baseUri.length() - 1);
-    }
-    for (PathSegment segment : request.getPathInfo().getPrecedingSegments()) {
-      baseUri += "/" + segment.getPath();
     }
     return baseUri;
   }

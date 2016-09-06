@@ -53,25 +53,26 @@ public class BatchTest extends AbstractRefTest {
     String responseBody = execute("/simple.batch");
     assertFalse(responseBody
         .contains("<error xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">"));
-    assertTrue(responseBody.contains("<edmx:Edmx Version=\"1.0\""));
+    assertTrue(responseBody.contains(
+        "<edmx:Edmx xmlns:edmx=\"http://schemas.microsoft.com/ado/2007/06/edmx\" Version=\"1.0\""));
   }
-  
+
   @Test
   public void functionImportBatch() throws Exception {
-	    String responseBody = execute("/functionImport.batch");
-	    assertFalse(responseBody
-	        .contains("<error xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">"));
-	    assertTrue(responseBody.contains("HTTP/1.1 200 OK"));
-	    assertTrue(responseBody.contains("<?xml version='1.0' encoding='utf-8'?><ManagerPhoto xmlns="));
+    String responseBody = execute("/functionImport.batch");
+    assertFalse(responseBody
+        .contains("<error xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">"));
+    assertTrue(responseBody.contains("HTTP/1.1 200 OK"));
+    assertTrue(responseBody.contains("<?xml version='1.0' encoding='utf-8'?><ManagerPhoto xmlns="));
   }
-  
+
   @Test
   public void employeesWithFilterBatch() throws Exception {
-	    String responseBody = execute("/employeesWithFilter.batch");
-	    assertFalse(responseBody
-	        .contains("<error xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">"));
-	    assertTrue(responseBody.contains("HTTP/1.1 200 OK"));
-	    assertTrue(responseBody.contains("<d:EmployeeName>Walter Winter</d:EmployeeName>"));
+    String responseBody = execute("/employeesWithFilter.batch");
+    assertFalse(responseBody
+        .contains("<error xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">"));
+    assertTrue(responseBody.contains("HTTP/1.1 200 OK"));
+    assertTrue(responseBody.contains("<d:EmployeeName>Walter Winter</d:EmployeeName>"));
   }
 
   @Test
@@ -107,7 +108,14 @@ public class BatchTest extends AbstractRefTest {
     String responseBody = StringHelper.inputStreamToString(response.getEntity().getContent(), true);
     assertTrue(responseBody.contains("HTTP/1.1 404 Not Found"));
   }
-  
+
+  @Test
+  public void testFailFirstRequest() throws Exception {
+    HttpResponse response = execute("/batchFailFirstCreateRequest.batch", "batch_cf90-46e5-1246");
+    String responseBody = StringHelper.inputStreamToString(response.getEntity().getContent(), true);
+    assertTrue(responseBody.contains("HTTP/1.1 404 Not Found"));
+  }
+
   @Test
   public void testGPPG() throws Exception {
     HttpResponse response = execute("/batchWithContentIdPart2.batch", "batch_cf90-46e5-1246");
